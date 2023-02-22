@@ -51,6 +51,7 @@ class DeepARPlugin {
             // start video immediately after the initalization, mirror = true
             // deepAR.startVideo(true);
             console.log("initialised");
+            document.getElementById('pickEffect')
             // or we can setup the video element externally and call deepAR.setVideoElement (see startExternalVideo function below)
             this.deepAR.downloadFaceTrackingModel(faceTrackingModelPath);
 
@@ -66,6 +67,12 @@ class DeepARPlugin {
 
   getPluginType() {
     return HMSVideoPluginType.TRANSFORM;
+  }
+
+  applyEffect(effect) {
+    this.deepAR.switchEffect(0, "slot", effect, () => {
+      console.log('effect applied', effect);
+    });
   }
 
   stop() {}
@@ -89,6 +96,8 @@ class DeepARPlugin {
   }
 }
 
+const plugin = new DeepARPlugin();
+
 actions
   .preview({
     userName: "test",
@@ -98,12 +107,36 @@ actions
     },
   })
   .then(() => {
-    return actions.addPluginToVideoTrack(new DeepARPlugin());
+    return actions.addPluginToVideoTrack(plugin);
   })
   .then(() => {
     const localVideoTrackID = store.getState(selectLocalVideoTrackID);
     actions.attachVideo(localVideoTrackID, document.getElementById("video"));
   });
+
+  const effectList = [
+    effects.viking,
+    effects.makeup,
+    effects.makeup_split,
+    effects.stallone,
+    effects.flower_face,
+    effects.galaxy_bacground,
+    effects.humaniod,
+    effects.devil_horns,
+    effects.ping_pong,
+    effects.hearts,
+    effects.snail,
+    effects.hope,
+    effects.vendetta,
+    effects.fire,
+    effects.elephant_trunk
+  ];
+
+  document.getElementById('pickEffect').onclick = () => {
+    const randomIndex = Math.floor(Math.random() *  effectList.length);
+    plugin.applyEffect(effectList[randomIndex])
+  }
+
 
 /* deepAR.callbacks.onCameraPermissionAsked = () => {
   console.log('camera permission asked');
@@ -231,24 +264,7 @@ $(document).ready(function () {
     variableWidth: true,
   });
 
-  const effectList = [
-    effects.viking,
-    effects.makeup,
-    effects.makeup_split,
-    effects.stallone,
-    effects.flower_face,
-    effects.galaxy_bacground,
-    effects.humaniod,
-    effects.devil_horns,
-    effects.ping_pong,
-    effects.hearts,
-    effects.snail,
-    effects.hope,
-    effects.vendetta,
-    effects.fire,
-    effects.elephant_trunk
-  ];
-
+ 
   $('.effect-carousel').on('afterChange', function (event, slick, currentSlide) {
     deepAR.switchEffect(0, 'slot', effectList[currentSlide]);
   });

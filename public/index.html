@@ -116,6 +116,17 @@
       height: 80px;
       z-index: 99999;
     }
+
+    #pickEffect {
+      box-shadow: none;
+      background-color: rgb(44, 177, 159);
+      color: white;
+      border-radius: 4px;
+      padding: 8px 16px;
+      border: none;
+      min-height: 32px;
+      display: none;
+    }
   </style>
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 </head>
@@ -125,6 +136,8 @@
   <div>
     <canvas class="deepar" id="deepar-canvas" oncontextmenu="event.preventDefault()"></canvas>
     <video muted playsinline autoplay id="video" width="640" height="480"></video>
+
+    <button id="pickEffect">Apply Random Effect</button>
   </div>
   <!-- <div id="loader-wrapper">
     <span class="loader"></span></span>
