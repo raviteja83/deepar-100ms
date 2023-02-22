@@ -18,11 +18,8 @@ const actions = hms.getActions();
 const store = hms.getStore();
 
 const canvas = document.getElementById("deepar-canvas");
-canvas.width =
-  window.innerWidth > window.innerHeight
-    ? Math.floor(window.innerHeight * 0.66)
-    : window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = 640;
+canvas.height = 480;
 
 class DeepARPlugin {
   deepAR = null;
@@ -80,14 +77,15 @@ class DeepARPlugin {
   processVideoFrame(input, output) {
     output.width = input.width;
     output.height = input.height;
-    const ctx = output.getContext("2d", { willReadFrequently: true });
-    ctx?.drawImage(input, 0, 0, input.width, input.height);
+    const ctx = input.getContext("2d", { willReadFrequently: true });
     this.deepAR?.processFrame(
       ctx?.getImageData(0, 0, input.width, input.height).data,
       output.width,
       output.height,
       false
     );
+    const outCtx = output.getContext("2d");
+    outCtx?.drawImage(canvas, 0, 0, input.width, input.height);
   }
 }
 
