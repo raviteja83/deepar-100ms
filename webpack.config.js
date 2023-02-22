@@ -1,4 +1,5 @@
 const path = require('path');
+require("dotenv").config();
 
 module.exports = {
   entry: './src/index.js',
@@ -30,6 +31,11 @@ module.exports = {
       '@effects': path.resolve(__dirname, 'effects/'),
     },
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.API_KEY": process.env.API_KEY,
+    }),
+  ],
   performance: {
     maxEntrypointSize: 1000000,
     maxAssetSize: 10000000,
