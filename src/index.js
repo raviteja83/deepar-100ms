@@ -14,7 +14,7 @@ canvas.width = window.innerWidth > window.innerHeight ? Math.floor(window.innerH
 canvas.height = window.innerHeight;
 
 const deepAR = new DeepAR({
-  licenseKey: 'your_license_key_goes_here',
+  licenseKey: process.env.API_KEY,
   deeparWasmPath,
   canvas,
   segmentationConfig: {
