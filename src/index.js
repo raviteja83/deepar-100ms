@@ -53,9 +53,10 @@ class DeepARPlugin {
           onInitialize: () => {
             // start video immediately after the initalization, mirror = true
             // deepAR.startVideo(true);
-
+            console.log("initialised");
             // or we can setup the video element externally and call deepAR.setVideoElement (see startExternalVideo function below)
             this.deepAR.downloadFaceTrackingModel(faceTrackingModelPath);
+            window.deepAR = this.deepAR;
 
             this.deepAR.switchEffect(0, "slot", effects.viking, () => {
               // effect loaded
@@ -82,6 +83,7 @@ class DeepARPlugin {
     output.height = input.height;
     const ctx = output.getContext("2d", { willReadFrequently: true });
     ctx?.drawImage(input, 0, 0, input.width, input.height);
+    console.log("processing frame", input, output, this.deepAR); 
     this.deepAR?.processFrame(
       ctx?.getImageData(0, 0, input.width, input.height).data,
       output.width,
