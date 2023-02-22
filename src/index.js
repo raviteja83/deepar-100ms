@@ -72,8 +72,9 @@ class DeepARPlugin {
   processVideoFrame(input, output) {
     output.width = input.width;
     output.height = input.height;
-    output.getContext('2d').drawImage(input, 0,0,input.width, input.height);
-    this.deepAR?.processFrame(output.getImageData().data, ouput.width, output.height, false);
+    const ctx =  output.getContext('2d');
+    ctx?.drawImage(input, 0,0,input.width, input.height);
+    this.deepAR?.processFrame(ctx?.getImageData().data, ouput.width, output.height, false);
   }
 }
 
