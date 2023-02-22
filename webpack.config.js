@@ -34,7 +34,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.API_KEY": JSON.stringify(process.env.API_KEY),
+      "process.env": JSON.stringify({ API_KEY: process.env.API_KEY, HMS_TOKEN: process.env.HMS_TOKEN }),
     }),
   ],
   performance: {

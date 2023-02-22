@@ -1,46 +1,95 @@
 import { DeepAR } from 'deepar';
 import deeparWasmPath from 'deepar/wasm/deepar.wasm';
+import { HMSReactiveStore, HMSVideoPluginType } from '@100mslive/hms-video-store';
 import faceTrackingModelPath from 'deepar/models/face/models-68-extreme.bin';
-import segmentationModelPath from 'deepar/models/segmentation/segmentation-160x160-opt.bin';
-import poseEstimationWasmPath from 'deepar/wasm/libxzimgPoseEstimation.wasm';
-import footDetectorPath from 'deepar/models/foot/foot-detection-96x96x6.bin';
-import footTrackerPath from 'deepar/models/foot/foot-tracker-96x96x18-test.bin';
-import footObjPath from 'deepar/models/foot/foot-model.obj';
+// import segmentationModelPath from 'deepar/models/segmentation/segmentation-160x160-opt.bin';
+// import poseEstimationWasmPath from 'deepar/wasm/libxzimgPoseEstimation.wasm';
+// import footDetectorPath from 'deepar/models/foot/foot-detection-96x96x6.bin';
+// import footTrackerPath from 'deepar/models/foot/foot-tracker-96x96x18-test.bin';
+// import footObjPath from 'deepar/models/foot/foot-model.obj';
 import * as effects from './effects';
 
+const hms = new HMSReactiveStore();
+const actions = hms.getActions();
 
 const canvas = document.getElementById('deepar-canvas');
 canvas.width = window.innerWidth > window.innerHeight ? Math.floor(window.innerHeight * 0.66) : window.innerWidth;
 canvas.height = window.innerHeight;
 
-const deepAR = new DeepAR({
-  licenseKey: process.env.API_KEY,
-  deeparWasmPath,
-  canvas,
-  segmentationConfig: {
-    modelPath: segmentationModelPath,
-  },
-  footTrackingConfig: {
-    poseEstimationWasmPath,
-    detectorPath: footDetectorPath,
-    trackerPath: footTrackerPath,
-    objPath: footObjPath,
-  },
-  callbacks: {
-    onInitialize: () => {
-      // start video immediately after the initalization, mirror = true
-      deepAR.startVideo(true);
+class DeepARPlugin {
+  deepAR = null;
+  getName() {
+    return "DeepARPlugin";
+  }
 
-      // or we can setup the video element externally and call deepAR.setVideoElement (see startExternalVideo function below)
+  checkSupport() {
+    return { isSupported: true };
+  }
 
-      deepAR.switchEffect(0, 'slot', effects.viking, () => {
-        // effect loaded
-      });
+  async init() {
+    return new Promise((resolve) => {
+      deepAR = new DeepAR({
+        licenseKey: process.env.API_KEY,
+        deeparWasmPath,
+        canvas,
+        // segmentationConfig: {
+        //   modelPath: segmentationModelPath,
+        // },
+        // footTrackingConfig: {
+          //   poseEstimationWasmPath,
+          //   detectorPath: footDetectorPath,
+          //   trackerPath: footTrackerPath,
+          //   objPath: footObjPath,
+          // },
+          callbacks: {
+            onInitialize:  () => {
+              // start video immediately after the initalization, mirror = true
+              // deepAR.startVideo(true);
+              
+              // or we can setup the video element externally and call deepAR.setVideoElement (see startExternalVideo function below)
+              
+              deepAR.switchEffect(0, 'slot', effects.viking, () => {
+                // effect loaded
+                  resolve();
+              });
+            }
+          },
+        });
+        deepAR.downloadFaceTrackingModel(faceTrackingModelPath);
+      })
     }
-  },
+      
+  getPluginType() {
+    return HMSVideoPluginType.TRANSFORM;
+  }
+
+  stop() {}
+
+  /**
+   * @param input {HTMLCanvasElement}
+   * @param output {HTMLCanvasElement}
+   */
+  processVideoFrame(input, output) {
+    output.width = input.width;
+    output.height = input.height;
+    output.getContext('2d').drawImage(input, 0,0,input.width, input.height);
+    this.deepAR?.processFrame(output.getImageData().data, ouput.width, output.height, false);
+  }
+}
+
+console.error(process.env.HMS_TOKEN);
+
+actions.preview({
+  userName: 'test',
+  authToken: process.env.HMS_TOKEN,
+  settings: {
+    isAudioMuted: true
+  }
+}).then(() => {
+  actions.addPluginToVideoTrack(new DeepARPlugin());
 });
 
-deepAR.callbacks.onCameraPermissionAsked = () => {
+/* deepAR.callbacks.onCameraPermissionAsked = () => {
   console.log('camera permission asked');
 };
 
@@ -68,10 +117,10 @@ deepAR.callbacks.onVideoStarted = () => {
   const loaderWrapper = document.getElementById('loader-wrapper');
   loaderWrapper.style.display = 'none';
 };
+ */
+// 
 
-deepAR.downloadFaceTrackingModel(faceTrackingModelPath);
-
-let isRecording = false;
+/* let isRecording = false;
 document.getElementById('recording-btn').onclick = (e) => {
   if (!isRecording) {
     isRecording = true;
@@ -84,10 +133,10 @@ document.getElementById('recording-btn').onclick = (e) => {
       isRecording = false;
     });
   }
-};
+}; */
 
 // Store video objects for cleanup
-let videoObjects = {};
+/* let videoObjects = {};
 
 function startExternalVideo() {
   cleanupVideoObjects();
@@ -145,7 +194,7 @@ function cleanupVideoObjects() {
     videoObjects.video.pause();
     videoObjects = {};
   }
-}
+} */
 
 // Position the carousel to cover the canvas
 if (window.innerWidth > window.innerHeight) {
@@ -155,7 +204,7 @@ if (window.innerWidth > window.innerHeight) {
   carousel.style.marginLeft = (window.innerWidth - width) / 2 + "px";
 }
 
-
+/* 
 $(document).ready(function () {
   $('.effect-carousel').slick({
     slidesToShow: 1,
@@ -188,3 +237,4 @@ $(document).ready(function () {
     deepAR.switchEffect(0, 'slot', effectList[currentSlide]);
   });
 });
+ */
