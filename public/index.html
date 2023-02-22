@@ -10,13 +10,10 @@
     canvas.deepar {
       border: 0px none;
       background-color: black;
-      display: none;
-      margin: auto;
+      display: inline-block;
+      width: 640px;
+      height: 480px;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
-
-    #video {
-      margin: auto;
     }
 
     body {
@@ -122,12 +119,13 @@
 
 <body>
   <!-- <button id="recording-btn">Start/stop video recording</button> -->
-
-  <canvas class="deepar" id="deepar-canvas" oncontextmenu="event.preventDefault()"></canvas>
+  <div>
+    <canvas class="deepar" id="deepar-canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <video muted playsinline autoplay id="video" width="640" height="480"></video>
+  </div>
   <!-- <div id="loader-wrapper">
     <span class="loader"></span></span>
   </div> -->
-  <video muted playsinline autoplay id="video" width="640" height="480"></video>
   <!-- <div class="effect-carousel">
     <div><img class="thumb" src="thumbs/viking.png"></div>
       <div><img class="thumb" src="thumbs/makeup.png"></div>

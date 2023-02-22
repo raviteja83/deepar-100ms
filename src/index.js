@@ -217,12 +217,12 @@ function cleanupVideoObjects() {
 } */
 
 // Position the carousel to cover the canvas
-if (window.innerWidth > window.innerHeight) {
-  const width = Math.floor(window.innerHeight * 0.66);
-  const carousel = document.getElementsByClassName("effect-carousel")[0];
-  carousel.style.width = width + "px";
-  carousel.style.marginLeft = (window.innerWidth - width) / 2 + "px";
-}
+// if (window.innerWidth > window.innerHeight) {
+//   const width = Math.floor(window.innerHeight * 0.66);
+//   const carousel = document.getElementsByClassName("effect-carousel")[0];
+//   carousel.style.width = width + "px";
+//   carousel.style.marginLeft = (window.innerWidth - width) / 2 + "px";
+// }
 
 /* 
 $(document).ready(function () {
