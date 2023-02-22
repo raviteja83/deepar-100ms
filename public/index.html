@@ -14,14 +14,15 @@
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
-    #video {
-      margin: 0 auto;
-      display: block;
-    }
-
     body {
       margin: 0px;
       padding: 0px;
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
     }
 
     #loader-wrapper {
@@ -124,8 +125,9 @@
       border-radius: 4px;
       padding: 8px 16px;
       border: none;
-      min-height: 32px;
+      min-height: 40px;
       display: none;
+      cursor: pointer;
     }
   </style>
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
