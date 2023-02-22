@@ -47,9 +47,9 @@ class DeepARPlugin {
               // deepAR.startVideo(true);
               
               // or we can setup the video element externally and call deepAR.setVideoElement (see startExternalVideo function below)
-              deepAR.downloadFaceTrackingModel(faceTrackingModelPath);
+              this.deepAR.downloadFaceTrackingModel(faceTrackingModelPath);
               
-              deepAR.switchEffect(0, 'slot', effects.viking, () => {
+              this.deepAR.switchEffect(0, 'slot', effects.viking, () => {
                 // effect loaded
                   resolve();
               });
