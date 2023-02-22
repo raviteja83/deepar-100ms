@@ -28,7 +28,7 @@ class DeepARPlugin {
 
   async init() {
     return new Promise((resolve) => {
-      deepAR = new DeepAR({
+      this.deepAR = new DeepAR({
         licenseKey: process.env.API_KEY,
         deeparWasmPath,
         canvas,
