@@ -51,7 +51,7 @@ class DeepARPlugin {
             // start video immediately after the initalization, mirror = true
             // deepAR.startVideo(true);
             console.log("initialised");
-            document.getElementById('pickEffect')
+            document.getElementById('pickEffect').style.display = 'block';
             // or we can setup the video element externally and call deepAR.setVideoElement (see startExternalVideo function below)
             this.deepAR.downloadFaceTrackingModel(faceTrackingModelPath);
 
