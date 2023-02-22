@@ -74,7 +74,7 @@ class DeepARPlugin {
     output.height = input.height;
     const ctx =  output.getContext('2d', { willReadFrequently: true });
     ctx?.drawImage(input, 0,0,input.width, input.height);
-    this.deepAR?.processFrame(ctx?.getImageData(0,0,input.width,input.height).data, ouput.width, output.height, false);
+    this.deepAR?.processFrame(ctx?.getImageData(0,0,input.width,input.height).data, output.width, output.height, false);
   }
 }
 
